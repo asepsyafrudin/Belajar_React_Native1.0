@@ -1,5 +1,6 @@
-import { Link, Stack } from "expo-router";
-import { Image, Text, View, StyleSheet } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Link, Stack, router } from "expo-router";
+import { Image, Text, View, StyleSheet, Button } from "react-native";
 
 function LogoTitle() {
   return (
@@ -17,6 +18,13 @@ function LogoTitle() {
  * @returns {JSX.Element} The Home component
  */
 export default function Home() {
+  const handleLogout = async () => {
+    try {
+      await AsyncStorage.setItem("isLoggedIn", "false");
+      router.replace("/");
+    } catch (error) {}
+  };
+
   return (
     <View style={styles.container}>
       {/* Display a header with the app title and a custom logo */}
@@ -39,7 +47,7 @@ export default function Home() {
 
       {/* Display a link to the Details screen */}
       <Link
-        href={{ pathname: "details", params: { name: "Bacon" } }} // Set the path and parameters for the link
+        href={{ pathname: "/Home/details", params: { name: "xxx" } }} // Set the path and parameters for the link
       >
         Go to Details
       </Link>
@@ -53,16 +61,17 @@ export default function Home() {
 
       {/* Display a link to the Profile screen */}
       <Link
-        href={{ pathname: "Profile" }} // Set the path for the link
+        href={{ pathname: "Home/Profile" }} // Set the path for the link
       >
         Go to Profile
       </Link>
 
-      <Link
+      {/* <Link
         href="/" // Set the path for the link
       >
         Logout
-      </Link>
+      </Link> */}
+      <Button title="Logout" onPress={handleLogout} />
     </View>
   );
 }

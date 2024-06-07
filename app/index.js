@@ -1,5 +1,5 @@
 import { View, TouchableWithoutFeedback, StyleSheet } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   ApplicationProvider,
   Input,
@@ -11,15 +11,26 @@ import {
 } from "@ui-kitten/components";
 import * as eva from "@eva-design/eva";
 import { router } from "expo-router";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const userLogin = {
   username: "admin",
   password: "admin",
 };
+
 const App = () => {
   const [username, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [secureTextEntry, setSecureTextEntry] = useState(true);
+
+  useEffect(() => {
+    (async () => {
+      const isLoggedIn = await AsyncStorage.getItem("isLoggedIn");
+      if (isLoggedIn === "true") {
+        router.replace("/Home");
+      }
+    })();
+  }, []);
 
   // const toggleSecureEntry = () => {
   //   setSecureTextEntry(!secureTextEntry);
@@ -31,8 +42,9 @@ const App = () => {
   //   </TouchableWithoutFeedback>
   // );.
 
-  const handleUserLogin = () => {
+  const handleUserLogin = async () => {
     if (username === userLogin.username && password === userLogin.password) {
+      await AsyncStorage.setItem("isLoggedIn", "true");
       alert("Login Successful");
       router.navigate("/Home");
     } else {
