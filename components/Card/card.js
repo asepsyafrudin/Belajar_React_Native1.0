@@ -10,6 +10,13 @@ import {
 } from "react-native";
 
 const Card = ({ item, onIncrement, onDecrement }) => {
+  const increment = () => {
+    onIncrement(item.id);
+  };
+  const decrement = () => {
+    onDecrement(item.id);
+  };
+
   return (
     <View style={styles.productCard}>
       <Image source={{ uri: item.images[0] }} style={styles.productImage} />
@@ -22,11 +29,11 @@ const Card = ({ item, onIncrement, onDecrement }) => {
         </Text>
       </View>
       <View style={styles.productAmount}>
-        <TouchableOpacity style={styles.amountButton} onPress={onDecrement}>
+        <TouchableOpacity style={styles.amountButton} onPress={decrement}>
           <Text style={styles.amountButtonText}>-</Text>
         </TouchableOpacity>
-        <Text style={styles.amountText}>{item.amount}</Text>
-        <TouchableOpacity style={styles.amountButton} onPress={onIncrement}>
+        <Text style={styles.amountText}>{item.quantity}</Text>
+        <TouchableOpacity style={styles.amountButton} onPress={increment}>
           <Text style={styles.amountButtonText}>+</Text>
         </TouchableOpacity>
       </View>

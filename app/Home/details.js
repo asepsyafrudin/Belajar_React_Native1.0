@@ -9,8 +9,13 @@ export default function Details() {
 
   useEffect(() => {
     axios.get("https://dummyjson.com/products").then((res) => {
-      setData(res.data.products);
-      // console.log(res.data);
+      const pullData = res.data.products;
+      if (pullData.length > 0) {
+        for (let index = 0; index < pullData.length; index++) {
+          pullData[index] = { ...pullData[index], quantity: 0 };
+        }
+      }
+      setData(pullData);
     });
   }, []);
 
@@ -19,10 +24,35 @@ export default function Details() {
   const [order, setOrder] = useState([]);
 
   const handleDecrement = (id) => {
-    console.log(id);
+    let dataNew = data;
+    if (dataNew.length > 0) {
+      for (let index = 0; index < dataNew.length; index++) {
+        if (dataNew[index].id === id) {
+          dataNew[index].quantity = dataNew[index].quantity - 1;
+          console.log("qty", dataNew[index].quantity);
+        }
+      }
+      setData(dataNew);
+    }
+
+    // const dataYangMauDiubah = dataLama.find((item) => item.id === id);
+    // dataYangMauDiubah.quantity = dataYangMauDiubah.quantity - 1;
+    // console.log("qty", dataYangMauDiubah.quantity);
+    // const dataSelainDataBaru = dataLama.filter((item) => item.id !== id);
+    // dataSelainDataBaru.push(dataYangMauDiubah);
+    // setData(dataSelainDataBaru);
   };
   const handleIncrement = (id) => {
-    console.log(id);
+    let newData = data;
+    if (data.length > 0) {
+      for (let index = 0; index < data.length; index++) {
+        if (newData[index].id === id) {
+          newData[index].quantity = newData[index].quantity + 1;
+          console.log("qty", newData[index].quantity);
+        }
+      }
+    }
+    setData(newData);
   };
 
   return (
@@ -32,13 +62,13 @@ export default function Details() {
           title: params.name,
         }}
       />
-      {console.log(data)}
+      {/* {console.log(data)} */}
       {data.length > 0 &&
         data.map((item) => (
           <Card
             item={item}
-            onIncrement={handleIncrement}
-            onDecrement={handleDecrement}
+            onIncrement={(id) => handleIncrement(id)}
+            onDecrement={(id) => handleDecrement(id)}
             key={item.id}
           />
         ))}
