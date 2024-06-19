@@ -6,11 +6,20 @@ import Card from "../../components/Card/card";
 
 export default function Details() {
   const [data, setData] = useState([]);
+  const [dataBaru, setDataBaru] = useState([]);
+  const [action, setAction] = useState(0);
 
   useEffect(() => {
     axios.get("https://dummyjson.com/products").then((res) => {
+      const pull_data = res.data.products;
+
+      if (pull_data.length > 0) {
+        for (let index = 0; index < pull_data.length; index++) {
+          pull_data[index].quantity = 0;
+        }
+      }
       setData(res.data.products);
-      // console.log(res.data);
+      //console.log(pull_data[3].quantity);
     });
   }, []);
 
@@ -19,10 +28,36 @@ export default function Details() {
   const [order, setOrder] = useState([]);
 
   const handleDecrement = (id) => {
-    console.log(id);
+    const dataLama = [];
+    if (data.length > 0) {
+      data.forEach((item, i) => {
+        if (item.id === id) {
+          item.quantity = item.quantity - 1;
+          dataLama.push(item);
+          //console.log(item.quantity);
+        } else {
+          dataLama.push(item);
+        }
+      });
+    }
+    setData(dataLama);
+    //setAction(action + 1);
   };
   const handleIncrement = (id) => {
-    console.log(id);
+    const dataLama = [];
+    if (data.length > 0) {
+      data.forEach((item, i) => {
+        if (item.id === id) {
+          item.quantity = item.quantity + 1;
+          dataLama.push(item);
+          //console.log(item.quantity);
+        } else {
+          dataLama.push(item);
+        }
+      });
+    }
+    setData(dataLama);
+    //setAction(action + 1);
   };
 
   return (
@@ -32,13 +67,12 @@ export default function Details() {
           title: params.name,
         }}
       />
-      {console.log(data)}
       {data.length > 0 &&
         data.map((item) => (
           <Card
             item={item}
-            onIncrement={handleIncrement}
-            onDecrement={handleDecrement}
+            onIncrement={() => handleIncrement(item.id)}
+            onDecrement={() => handleDecrement(item.id)}
             key={item.id}
           />
         ))}
