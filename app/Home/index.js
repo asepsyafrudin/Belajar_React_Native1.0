@@ -47,7 +47,7 @@ export default function Home() {
 
       {/* Display a link to the Details screen */}
       <Link
-        href={{ pathname: "/Home/details", params: { name: "xxx" } }} // Set the path and parameters for the link
+        href={{ pathname: "/Home/details", params: { name: "Checkout" } }} // Set the path and parameters for the link
       >
         Go to Details
       </Link>
