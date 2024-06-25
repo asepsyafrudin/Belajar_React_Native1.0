@@ -8,7 +8,7 @@ export default function TabLayout() {
         name="index"
         options={{
           title: "Home",
-          href: null,
+          // href: null,
           tabBarIcon: ({ color }) => (
             <FontAwesome size={28} name="home" color={color} />
           ),

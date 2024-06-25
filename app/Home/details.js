@@ -8,7 +8,6 @@ import { Ionicons } from "@expo/vector-icons";
 export default function Details() {
   const [data, setData] = useState([]);
   const [dataBaru, setDataBaru] = useState([]);
-  const [action, setAction] = useState(0);
   const [totalOrder, setTotalOrder] = useState(0);
 
   useEffect(() => {

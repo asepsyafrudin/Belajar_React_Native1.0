@@ -66,6 +66,12 @@ export default function Home() {
         Go to Profile
       </Link>
 
+      <Link
+        href={{ pathname: "Scan" }} // Set the path for the link
+      >
+        Scan
+      </Link>
+
       {/* <Link
         href="/" // Set the path for the link
       >

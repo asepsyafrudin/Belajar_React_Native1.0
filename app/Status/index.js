@@ -4,6 +4,7 @@ export default function Tab() {
   return (
     <View style={styles.container}>
       <Text>Tab [Home]</Text>
+      <Text>Faisya</Text>
     </View>
   );
 }
