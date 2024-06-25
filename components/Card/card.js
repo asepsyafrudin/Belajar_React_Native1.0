@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import PropTypes from "prop-types";
 import {
   StyleSheet,
   View,
@@ -10,13 +11,13 @@ import {
 } from "react-native";
 
 const Card = ({ item, onIncrement, onDecrement }) => {
-  const increment = () => {
-    onIncrement(item.id);
-  };
-  const decrement = () => {
-    onDecrement(item.id);
-  };
-
+  // const increment = () => {
+  //   onIncrement(item.id);
+  // };
+  // const decrement = () => {
+  //   onDecrement(item.id);
+  // };
+  // console.log(item.quantity);
   return (
     <View style={styles.productCard}>
       <Image source={{ uri: item.images[0] }} style={styles.productImage} />
@@ -29,11 +30,11 @@ const Card = ({ item, onIncrement, onDecrement }) => {
         </Text>
       </View>
       <View style={styles.productAmount}>
-        <TouchableOpacity style={styles.amountButton} onPress={decrement}>
+        <TouchableOpacity style={styles.amountButton} onPress={onDecrement}>
           <Text style={styles.amountButtonText}>-</Text>
         </TouchableOpacity>
         <Text style={styles.amountText}>{item.quantity}</Text>
-        <TouchableOpacity style={styles.amountButton} onPress={increment}>
+        <TouchableOpacity style={styles.amountButton} onPress={onIncrement}>
           <Text style={styles.amountButtonText}>+</Text>
         </TouchableOpacity>
       </View>
@@ -131,5 +132,11 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
 });
+
+Card.propTypes = {
+  item: PropTypes.object.isRequired,
+  onIncrement: PropTypes.func.isRequired,
+  onDecrement: PropTypes.func.isRequired,
+};
 
 export default Card;
