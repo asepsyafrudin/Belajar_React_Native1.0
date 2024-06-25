@@ -1,21 +1,26 @@
 import axios from "axios";
 import { Stack, useLocalSearchParams, useRouter } from "expo-router";
 import { useEffect, useState } from "react";
-import { View, Text, StyleSheet, ScrollView } from "react-native";
+import { View, Text, StyleSheet, ScrollView, Button } from "react-native";
 import Card from "../../components/Card/card";
+import { Ionicons } from "@expo/vector-icons";
 
 export default function Details() {
   const [data, setData] = useState([]);
+  const [dataBaru, setDataBaru] = useState([]);
+  const [action, setAction] = useState(0);
+  const [totalOrder, setTotalOrder] = useState(0);
 
   useEffect(() => {
     axios.get("https://dummyjson.com/products").then((res) => {
-      const pullData = res.data.products;
-      if (pullData.length > 0) {
-        for (let index = 0; index < pullData.length; index++) {
-          pullData[index] = { ...pullData[index], quantity: 0 };
+      const pull_data = res.data.products;
+
+      if (pull_data.length > 0) {
+        for (let index = 0; index < pull_data.length; index++) {
+          pull_data[index].quantity = 0;
         }
       }
-      setData(pullData);
+      setData(res.data.products);
     });
   }, []);
 
@@ -25,48 +30,23 @@ export default function Details() {
   const [action, setAction] = useState(0);
 
   const handleDecrement = (id) => {
-    // let dataNew = data;
-    // if (dataNew.length > 0) {
-    //   for (let index = 0; index < dataNew.length; index++) {
-    //     if (dataNew[index].id === id) {
-    //       dataNew[index].quantity = dataNew[index].quantity - 1;
-    //       console.log("qty", dataNew[index].quantity);
-    //     }
-    //   }
-    //   setData(dataNew);
-    // }
-
+    const dataLama = [];
     if (data.length > 0) {
       data.forEach((item, i) => {
         if (item.id === id) {
-          if (item.stock > 0) {
-            if (item.quantity > 0) {
-              item.quantity = item.quantity - 1;
-            }
+          if (item.quantity > 0) {
+            item.quantity = item.quantity - 1;
           }
+          dataLama.push(item);
+        } else {
+          dataLama.push(item);
         }
       });
     }
-    setAction(action - 1);
-
-    // const dataYangMauDiubah = dataLama.find((item) => item.id === id);
-    // dataYangMauDiubah.quantity = dataYangMauDiubah.quantity - 1;
-    // console.log("qty", dataYangMauDiubah.quantity);
-    // const dataSelainDataBaru = dataLama.filter((item) => item.id !== id);
-    // dataSelainDataBaru.push(dataYangMauDiubah);
-    // setData(dataSelainDataBaru);
+    setData(dataLama);
+    //setAction(action + 1);
   };
   const handleIncrement = (id) => {
-    // let newData = data;
-    // if (data.length > 0) {
-    //   for (let index = 0; index < data.length; index++) {
-    //     if (newData[index].id === id) {
-    //       newData[index].quantity = newData[index].quantity + 1;
-    //       console.log("qty", newData[index].quantity);
-    //     }
-    //   }
-    // }
-    // setData(newData);
     const dataLama = [];
     if (data.length > 0) {
       data.forEach((item, i) => {
@@ -93,7 +73,6 @@ export default function Details() {
             title: params.name,
           }}
         />
-        {/* {console.log(data)} */}
         {data.length > 0 &&
           data.map((item) => (
             <Card
@@ -105,10 +84,25 @@ export default function Details() {
           ))}
       </ScrollView>
       <View style={styles.footer}>
-        <Text>Total Order: {data.length}</Text>
-        {/* <View style={styles.buttonContainer}>
-          <Button title="Checkout" onPress={handleCheckout} />
-        </View> */}
+        <View>
+          <Text style={styles.totalorder}>
+            Total Order:{" "}
+            {data.reduce((total, product) => total + product.quantity, 0)}
+          </Text>
+          <Text style={styles.totalorder}>
+            Total Price:{" $"}
+            {data
+              .reduce(
+                (total, product) => total + product.quantity * product.price,
+                0
+              )
+              .toFixed(2)}
+          </Text>
+        </View>
+
+        <View style={styles.buttonContainer}>
+          <Ionicons name="cart" size={40} color="black" />
+        </View>
       </View>
     </>
   );
@@ -123,11 +117,16 @@ const styles = StyleSheet.create({
   footer: {
     alignItems: "center",
     justifyContent: "space-between",
-    direction: "row",
+    flexDirection: "row",
     padding: 10,
-    backgroundColor: "lightgray",
+    backgroundColor: "orange",
   },
   buttonContainer: {
     marginTop: 10,
+  },
+  totalorder: {
+    color: "black",
+    fontSize: 20,
+    fontWeight: "bold",
   },
 });

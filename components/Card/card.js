@@ -11,13 +11,7 @@ import {
 } from "react-native";
 
 const Card = ({ item, onIncrement, onDecrement }) => {
-  // const increment = () => {
-  //   onIncrement(item.id);
-  // };
-  // const decrement = () => {
-  //   onDecrement(item.id);
-  // };
-  // console.log(item.quantity);
+  //console.log("test");
   return (
     <View style={styles.productCard}>
       <Image source={{ uri: item.images[0] }} style={styles.productImage} />
